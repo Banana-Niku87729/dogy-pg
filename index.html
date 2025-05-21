@@ -1,1 +1,474 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dogy - プログラミングに苦労は必要ない。</title>
+    <style>
+        :root {
+            --primary-color: #4a6cfa;
+            --secondary-color: #1d3557;
+            --accent-color: #e63946;
+            --bg-color: #f1faee;
+            --text-color: #1d3557;
+            --light-color: #a8dadc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 12px;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 36px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--light-color);
+        }
+        
+        .download-btn {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .download-btn:hover {
+            background-color: #d62b39;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        
+        .hero {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        
+        .hero p {
+            font-size: 24px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+        
+        .features {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+            color: var(--secondary-color);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            padding: 30px;
+            border-radius: 12px;
+            background-color: var(--bg-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+        
+        .code-example {
+            padding: 80px 0;
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .code-container {
+            background-color: #1a2b3c;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow-x: auto;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        
+        pre {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            color: #f1faee;
+            line-height: 1.5;
+        }
+        
+        .testimonials {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background-color: var(--bg-color);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+        
+        .cta {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+        
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: var(--light-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">D</div>
+                <div class="logo-text">Dogy</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#features">特徴</a></li>
+                    <li><a href="#examples">コード例</a></li>
+                    <li><a href="#testimonials">ユーザーの声</a></li>
+                    <li><a href="#docs">ドキュメント</a></li>
+                </ul>
+            </nav>
+            <button class="download-btn">今すぐダウンロード</button>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>プログラミングに苦労は必要ない。</h1>
+            <p>Dogyは、直感的で簡単に習得できる次世代のプログラミング言語です。複雑なことを簡単に。</p>
+            <button class="download-btn">Dogyをダウンロード v1.0</button>
+        </div>
+    </section>
+    
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">なぜDogyを選ぶのか</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>高速パフォーマンス</h3>
+                    <p>軽量で作成されていることにより、Dogyは他の言語と比較して高速な実行速度を実現します。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>学習しやすさ</h3>
+                    <p>直感的な構文により、プログラミング初心者でも短時間で習得できます。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛠️</div>
+                    <h3>承諾を受けたライブラリ</h3>
+                    <p>Dogy Official Moduleでは承諾を受けたライブラリのみ記載されます</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>セキュリティ</h3>
+                    <p>重複しているコードなどに警告を表示。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Windowsで実行</h3>
+                    <p>Windows以外では実行できませんが、順次対応していきます。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <h3>活発なコミュニティ</h3>
+                    <p>質問や課題を解決するための活発なコミュニティと、継続的な言語の進化を支える情熱的な開発者たち。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="examples" class="code-example">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">シンプルなコード例</h2>
+            <div class="code-container">
+                <pre>
+// Dogyでのシンプルなプログラム例
 
+// ウィンドウ表示
+dogy window 600x500 "Sample Window" id=sample
+// sampleと指定されたウィンドウにボタンを表示
+dogy botton text="ボタン" id=sample y=100 px=14 btid=button1 color="#FF9999"
+// クリック処理
+clicked btid=button1 click_event
+// 発火時に新しいウィンドウを表示。
+click_event{dogy window 600x400 id=second "新しいウィンドウ"}
+                </pre>
+            </div>
+        </div>
+    </section>
+    <--
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2 class="section-title">ユーザーの声</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">「Dogyのおかげで、プログラミングの学習がこんなに楽しいとは思いませんでした。直感的な構文とわかりやすいエラーメッセージのおかげで、短期間で実用的なアプリケーションを作れるようになりました。」</p>
+                    <p class="testimonial-author">- 田中 誠司, プログラミング初心者</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">「他の言語で数年間開発してきましたが、Dogyに切り替えてから生産性が大幅に向上しました。特に並列処理とメモリ管理の簡潔さが気に入っています。」</p>
+                    <p class="testimonial-author">- 佐藤 麻衣, シニアソフトウェアエンジニア</p>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">「私たちのスタートアップでは、プロトタイプから本番環境まで全てDogyで開発しています。開発速度が格段に上がり、パフォーマンスの問題も大幅に減少しました。」</p>
+                    <p class="testimonial-author">- 鈴木 健太, CTOスタートアップ創業者</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    -->
+      
+    <section class="cta">
+        <div class="container">
+            <h2>今すぐDogyを始めよう</h2>
+            <p>プログラミングに苦労は必要ありません。Dogyの直感的な構文と強力な機能で、あなたのアイデアを素早く形にしましょう。</p>
+            <button class="download-btn">無料でダウンロード</button>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Dogy</h3>
+                    <ul>
+                        <li><a href="#about">概要</a></li>
+                        <li><a href="#team">チーム</a></li>
+                        <li><a href="#blog">ブログ</a></li>
+                        <li><a href="#careers">採用情報</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>製品</h3>
+                    <ul>
+                        <li><a href="#download">ダウンロード</a></li>
+                        <li><a href="#pricing">価格</a></li>
+                        <li><a href="#enterprise">エンタープライズ</a></li>
+                        <li><a href="#updates">更新情報</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>リソース</h3>
+                    <ul>
+                        <li><a href="#docs">ドキュメント</a></li>
+                        <li><a href="#tutorials">チュートリアル</a></li>
+                        <li><a href="#examples">サンプルコード</a></li>
+                        <li><a href="#community">コミュニティ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>サポート</h3>
+                    <ul>
+                        <li><a href="#help">ヘルプセンター</a></li>
+                        <li><a href="#faq">よくある質問</a></li>
+                        <li><a href="#contact">お問い合わせ</a></li>
+                        <li><a href="#status">システム状況</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <button class="download-btn">Dogyをダウンロード</button>
+                <p style="margin-top: 20px;">© 2025 Dogy Programming Language. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
