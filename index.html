@@ -58,14 +58,10 @@
         .logo-icon {
             width: 60px;
             height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: white;
+            object-fit: contain;
             border-radius: 12px;
-            color: var(--primary-color);
-            font-weight: bold;
-            font-size: 36px;
+            background-color: white;
+            padding: 5px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
@@ -314,7 +310,7 @@
     <header>
         <div class="container header-content">
             <div class="logo">
-                <div class="logo-icon">D</div>
+                <img src="dogy.png" alt="Dogy Logo" class="logo-icon" />
                 <div class="logo-text">Dogy</div>
             </div>
             <nav>
