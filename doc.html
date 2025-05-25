@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dogy ドキュメント - プログラミングに苦労は必要ない。</title>
+    <link rel="icon" href="favicon.ico">
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --accent-color: #45b7d1;
+            --warning-color: #f9ca24;
+            --success-color: #6c5ce7;
+            --bg-color: #ffffff;
+            --surface-color: #f8f9fa;
+            --text-color: #2d3436;
+            --text-muted: #636e72;
+            --border-color: #e1e5e9;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --surface-color: #2d2d2d;
+            --text-color: #ffffff;
+            --text-muted: #b0b0b0;
+            --border-color: #404040;
+            --shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+            --shadow-hover: 0 8px 25px rgba(255, 255, 255, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background-color: var(--surface-color);
+            border-right: 2px solid var(--border-color);
+            padding: 20px;
+            overflow-y: auto;
+            position: fixed;
+            height: 100vh;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 12px;
+            background-color: var(--primary-color);
+            padding: 8px;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .theme-toggle {
+            margin-left: auto;
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            width: 50px;
+            height: 30px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+        
+        .theme-toggle.dark::before {
+            transform: translateX(18px);
+        }
+        
+        .nav-section {
+            margin-bottom: 25px;
+        }
+        
+        .nav-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+        
+        .nav-item {
+            display: block;
+            padding: 12px 15px;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 12px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .nav-item:hover::before {
+            left: 100%;
+        }
+        
+        .nav-item:hover {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            transform: translateX(5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .nav-item.active {
+            background: linear-gradient(45deg, var(--accent-color), var(--success-color));
+            color: white;
+            box-shadow: var(--shadow);
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+            max-width: calc(100% - 280px);
+        }
+        
+        .content-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .content-title {
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .content-subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            background-color: var(--surface-color);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-color);
+        }
+        
+        .section h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .section h3 {
+            font-size: 22px;
+            margin: 25px 0 15px 0;
+            color: var(--secondary-color);
+        }
+        
+        .emoji {
+            font-size: 32px;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .code-block {
+            background-color: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: 'Dogy';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 12px;
+            color: var(--text-muted);
+            background-color: var(--surface-color);
+            padding: 5px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        pre {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-color);
+        }
+        
+        .highlight-box {
+            background: linear-gradient(45deg, var(--warning-color), var(--success-color));
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, var(--surface-color), var(--bg-color));
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+        }
+        
+        .feature-card:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-color);
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        .breadcrumb a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumb a:hover {
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 1000;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                max-width: 100%;
+                padding: 20px;
+            }
+            
+            .mobile-menu-btn {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1001;
+                background: var(--primary-color);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                cursor: pointer;
+                box-shadow: var(--shadow);
+            }
+        }
+        
+        .auto-theme-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--surface-color);
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            padding: 10px 15px;
+            font-size: 12px;
+            color: var(--text-muted);
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+        
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 280px;
+            width: calc(100% - 280px);
+            height: 4px;
+            background-color: var(--border-color);
+            z-index: 100;
+        }
+        
+        .scroll-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .scroll-indicator {
+                left: 0;
+                width: 100%;
+            }
+            
+            .auto-theme-indicator {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-indicator">
+        <div class="scroll-progress" id="scrollProgress"></div>
+    </div>
+    
+    <button class="mobile-menu-btn" id="mobileMenuBtn" style="display: none;">☰</button>
+    
+    <div class="container">
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="dogy-icon.png" alt="Dogy Logo" class="logo-icon">
+                <div class="logo-text">Dogy</div>
+                <button class="theme-toggle" id="themeToggle"></button>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">はじめに</div>
+                <a href="#introduction" class="nav-item active">🚀 イントロダクション</a>
+                <a href="#installation" class="nav-item">💾 インストール</a>
+                <a href="#quickstart" class="nav-item">⚡ クイックスタート</a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">基本構文</div>
+                <a href="#variables" class="nav-item">📦 変数と定数</a>
+                <a href="#functions" class="nav-item">🔧 関数</a>
+                <a href="#conditions" class="nav-item">🔀 条件分岐</a>
+                <a href="#loops" class="nav-item">🔄 ループ</a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">高度な機能</div>
+                <a href="#classes" class="nav-item">🏗️ クラス</a>
+                <a href="#modules" class="nav-item">📚 モジュール</a>
+                <a href="#async" class="nav-item">⚡ 非同期処理</a>
+                <a href="#error" class="nav-item">🚨 エラーハンドリング</a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">ライブラリ</div>
+                <a href="#stdlib" class="nav-item">📦 標準ライブラリ</a>
+                <a href="#web" class="nav-item">🌐 Web開発</a>
+                <a href="#data" class="nav-item">📊 データ処理</a>
+                <a href="#ml" class="nav-item">🤖 機械学習</a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-title">リソース</div>
+                <a href="#examples" class="nav-item">💡 サンプル</a>
+                <a href="#best-practices" class="nav-item">✨ ベストプラクティス</a>
+                <a href="#faq" class="nav-item">❓ FAQ</a>
+                <a href="#community" class="nav-item">👥 コミュニティ</a>
+            </div>
+        </nav>
+        
+        <main class="main-content">
+            <div class="breadcrumb">
+                <a href="/">ホーム</a> → <span>ドキュメント</span> → <span>イントロダクション</span>
+            </div>
+            
+            <div class="content-header">
+                <h1 class="content-title">Dogy ドキュメント</h1>
+                <p class="content-subtitle">プログラミングに苦労は必要ない。直感的なDogyの世界へようこそ！</p>
+            </div>
+            
+            <section id="introduction" class="section">
+                <h2><span class="emoji">🚀</span>イントロダクション</h2>
+                <p>Dogyは、シンプルさと強力さを兼ね備えた次世代プログラミング言語です。初心者でも簡単に始められ、経験豊富な開発者も満足できる高度な機能を提供します。</p>
+                
+                <div class="highlight-box">
+                    <strong>🎉 Dogyの哲学:</strong> 複雑なことを簡単に、面倒なことを楽しく！
+                </div>
+                
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon">⚡</span>
+                        <h3>高速実行</h3>
+                        <p>最適化されたコンパイラによる驚異的な実行速度</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🌱</span>
+                        <h3>学習容易</h3>
+                        <p>直感的な構文で短時間での習得が可能</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🛠️</span>
+                        <h3>豊富な機能</h3>
+                        <p>あらゆる開発ニーズに対応する包括的な機能セット</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="installation" class="section">
+                <h2><span class="emoji">💾</span>インストール</h2>
+                <p>Dogyのインストールは驚くほど簡単です。以下の方法からお選びください：</p>
+                
+                <h3>🪟 Windows</h3>
+                <div class="code-block">
+                    <pre># PowerShellで実行
+curl -fsSL https://install.dogy.dev/windows | iex</pre>
+                </div>
+                
+                <h3>🍎 macOS</h3>
+                <div class="code-block">
+                    <pre># Homebrewを使用
+brew install dogy
+
+# または直接インストール
+curl -fsSL https://install.dogy.dev/macos | bash</pre>
+                </div>
+                
+                <h3>🐧 Linux</h3>
+                <div class="code-block">
+                    <pre># Ubuntu/Debian
+curl -fsSL https://install.dogy.dev/linux | sudo bash
+
+# または手動インストール
+wget https://releases.dogy.dev/latest/dogy-linux.tar.gz
+tar -xzf dogy-linux.tar.gz
+sudo mv dogy /usr/local/bin/</pre>
+                </div>
+            </section>
+            
+            <section id="quickstart" class="section">
+                <h2><span class="emoji">⚡</span>クイックスタート</h2>
+                <p>たった5分でDogyの魅力を体験できます！</p>
+                
+                <h3>👋 Hello World</h3>
+                <div class="code-block">
+                    <pre>// hello.dogy
+print("Hello, Dogy World! 🐕")</pre>
+                </div>
+                
+                <h3>🧮 簡単な計算</h3>
+                <div class="code-block">
+                    <pre>// 変数の宣言
+let name = "太郎"
+let age = 25
+let score = 95.5
+
+// 文字列結合も簡単
+print("こんにちは、" + name + "さん！")
+print("年齢: " + age + "歳")
+print("スコア: " + score + "点")</pre>
+                </div>
+                
+                <h3>🔢 関数の定義</h3>
+                <div class="code-block">
+                    <pre>// 関数定義
+func greet(name, age) {
+    return "こんにちは、" + name + "さん（" + age + "歳）！"
+}
+
+// 関数呼び出し
+let message = greet("花子", 23)
+print(message)</pre>
+                </div>
+            </section>
+            
+            <section id="variables" class="section">
+                <h2><span class="emoji">📦</span>変数と定数</h2>
+                <p>Dogyでは変数と定数の宣言が直感的で分かりやすくなっています。</p>
+                
+                <h3>🔤 変数の宣言</h3>
+                <div class="code-block">
+                    <pre>// 変数（変更可能）
+let username = "dogy_user"
+let count = 0
+let isActive = true
+
+// 値の変更
+username = "new_user"
+count = count + 1</pre>
+                </div>
+                
+                <h3>🔒 定数の宣言</h3>
+                <div class="code-block">
+                    <pre>// 定数（変更不可）
+const PI = 3.14159
+const APP_NAME = "DogyApp"
+const MAX_USERS = 1000
+
+// エラー: 定数は変更できません
+// PI = 3.14  // ❌ コンパイルエラー</pre>
+                </div>
+                
+                <div class="highlight-box">
+                    <strong>💡 Tip:</strong> 変更の必要がない値は<code>const</code>を使用することで、意図しない変更を防げます！
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <div class="auto-theme-indicator" id="themeIndicator">
+        🌓 テーマ: 自動
+    </div>
+    
+    <script>
+        // テーマ管理
+        class ThemeManager {
+            constructor() {
+                this.currentTheme = 'auto';
+                this.init();
+            }
+            
+            init() {
+                this.applyTheme();
+                this.setupEventListeners();
+                this.updateIndicator();
+            }
+            
+            applyTheme() {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const themeToApply = this.currentTheme === 'auto' 
+                    ? (prefersDark ? 'dark' : 'light')
+                    : this.currentTheme;
+                
+                document.documentElement.setAttribute('data-theme', themeToApply);
+                document.getElementById('themeToggle').classList.toggle('dark', themeToApply === 'dark');
+            }
+            
+            setupEventListeners() {
+                document.getElementById('themeToggle').addEventListener('click', () => {
+                    this.cycleTheme();
+                });
+                
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+                    if (this.currentTheme === 'auto') {
+                        this.applyTheme();
+                    }
+                });
+            }
+            
+            cycleTheme() {
+                const themes = ['auto', 'light', 'dark'];
+                const currentIndex = themes.indexOf(this.currentTheme);
+                this.currentTheme = themes[(currentIndex + 1) % themes.length];
+                this.applyTheme();
+                this.updateIndicator();
+            }
+            
+            updateIndicator() {
+                const indicator = document.getElementById('themeIndicator');
+                const icons = { auto: '🌓', light: '☀️', dark: '🌙' };
+                const labels = { auto: '自動', light: 'ライト', dark: 'ダーク' };
+                
+                indicator.textContent = `${icons[this.currentTheme]} テーマ: ${labels[this.currentTheme]}`;
+            }
+        }
+        
+        // ナビゲーション管理
+        class NavigationManager {
+            constructor() {
+                this.init();
+            }
+            
+            init() {
+                this.setupSmoothScrolling();
+                this.setupActiveNavigation();
+                this.setupMobileMenu();
+            }
+            
+            setupSmoothScrolling() {
+                document.querySelectorAll('.nav-item[href^="#"]').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = link.getAttribute('href').substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                            
+                            // モバイルメニューを閉じる
+                            if (window.innerWidth <= 768) {
+                                document.getElementById('sidebar').classList.remove('open');
+                            }
+                        }
+                    });
+                });
+            }
+            
+            setupActiveNavigation() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            document.querySelectorAll('.nav-item').forEach(item => {
+                                item.classList.remove('active');
+                            });
+                            
+                            const activeLink = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+                            if (activeLink) {
+                                activeLink.classList.add('active');
+                            }
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                document.querySelectorAll('.section[id]').forEach(section => {
+                    observer.observe(section);
+                });
+            }
+            
+            setupMobileMenu() {
+                const mobileBtn = document.getElementById('mobileMenuBtn');
+                const sidebar = document.getElementById('sidebar');
+                
+                // モバイル表示の判定
+                const updateMobileView = () => {
+                    if (window.innerWidth <= 768) {
+                        mobileBtn.style.display = 'block';
+                    } else {
+                        mobileBtn.style.display = 'none';
+                        sidebar.classList.remove('open');
+                    }
+                };
+                
+                updateMobileView();
+                window.addEventListener('resize', updateMobileView);
+                
+                mobileBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('open');
+                });
+                
+                // サイドバー外クリックで閉じる
+                document.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 768 && 
+                        !sidebar.contains(e.target) && 
+                        !mobileBtn.contains(e.target)) {
+                        sidebar.classList.remove('open');
+                    }
+                });
+            }
+        }
+        
+        // スクロール進捗表示
+        class ScrollProgressManager {
+            constructor() {
+                this.init();
+            }
+            
+            init() {
+                window.addEventListener('scroll', this.updateProgress.bind(this));
+            }
+            
+            updateProgress() {
+                const scrollTop = window.pageYOffset;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercent = (scrollTop / docHeight) * 100;
+                
+                document.getElementById('scrollProgress').style.width = scrollPercent + '%';
+            }
+        }
+        
+        // 初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            new ThemeManager();
+            new NavigationManager();
+            new ScrollProgressManager();
+        });
+    </script>
+</body>
+</html>
